@@ -1,19 +1,19 @@
 // useEffect: persistent state
 // http://localhost:3000/isolated/final/02.js
 
-import * as React from 'react'
+import * as React from 'react';
 
 function Greeting({initialName = ''}) {
   const [name, setName] = React.useState(
     window.localStorage.getItem('name') || initialName,
-  )
+  );
 
   React.useEffect(() => {
-    window.localStorage.setItem('name', name)
-  })
+    window.localStorage.setItem('name', name);
+  });
 
   function handleChange(event) {
-    setName(event.target.value)
+    setName(event.target.value);
   }
 
   return (
@@ -24,11 +24,11 @@ function Greeting({initialName = ''}) {
       </form>
       {name ? <strong>Hello {name}</strong> : 'Please type your name'}
     </div>
-  )
+  );
 }
 
 function App() {
-  return <Greeting />
+  return <Greeting />;
 }
 
-export default App
+export default App;

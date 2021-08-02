@@ -1,19 +1,50 @@
 // useEffect: persistent state
 // http://localhost:3000/isolated/exercise/02.js
 
-import * as React from 'react'
+import * as React from 'react';
+
+const useLocalStorageState = (
+  key,
+  defaultValue = '',
+  {serialize = JSON.stringify, deserialize = JSON.parse} = {},
+) => {
+  const [value, setValue] = React.useState(() => {
+    const localStorageValue = window.localStorage.getItem(key);
+    if (localStorageValue) {
+      return deserialize(localStorageValue);
+    }
+    // We make the default value optionally a function. If it's 
+    // computationally expensive we don't want it to have to be 
+    // passed every single time.
+    return typeof defaultValue === 'function' ? defaultValue() : defaultValue;
+  });
+
+  // useRef gives an object we can mutate without triggering re-renders,
+  // unlike useSate where re-render is triggered on every change
+  const prevKeyRef = React.useRef(key);
+
+  React.useEffect(() => {
+    // preKeyRef.current keeps track of our previous key
+    const prevKey = prevKeyRef.current;
+    // and if the previous key is not as the key passed as an argument
+    // then we got a new get, and we want to change it in localstorage
+    if (prevKey !== key) {
+      window.localStorage.removeItem(prevKey);
+    }
+    // we change the previous key to the key passed as an argument
+    prevKeyRef.current = key;
+    // we set the key in localstorage
+    window.localStorage.setItem(key, serialize(value));
+  }, [key, value, serialize]);
+
+  return [value, setValue];
+};
 
 function Greeting({initialName = ''}) {
-  // 🐨 initialize the state to the value from localStorage
-  // 💰 window.localStorage.getItem('name') || initialName
-  const [name, setName] = React.useState(initialName)
-
-  // 🐨 Here's where you'll use `React.useEffect`.
-  // The callback should set the `name` in localStorage.
-  // 💰 window.localStorage.setItem('name', name)
+  const [name, setName] = useLocalStorageState('name', initialName);
 
   function handleChange(event) {
-    setName(event.target.value)
+    setName(event.target.value);
   }
   return (
     <div>
@@ -23,11 +54,11 @@ function Greeting({initialName = ''}) {
       </form>
       {name ? <strong>Hello {name}</strong> : 'Please type your name'}
     </div>
-  )
+  );
 }
 
 function App() {
-  return <Greeting />
+  return <Greeting />;
 }
 
-export default App
+export default App;
