@@ -13,8 +13,8 @@ const useLocalStorageState = (
     if (localStorageValue) {
       return deserialize(localStorageValue);
     }
-    // We make the default value optionally a function. If it's 
-    // computationally expensive we don't want it to have to be 
+    // We make the default value optionally a function. If it's
+    // computationally expensive we don't want it to have to be
     // passed every single time.
     return typeof defaultValue === 'function' ? defaultValue() : defaultValue;
   });
@@ -32,7 +32,7 @@ const useLocalStorageState = (
       // We change it by removing the previous key
       window.localStorage.removeItem(prevKey);
     }
-    // then we assign the key passed as an argument to the previous key 
+    // then we assign the key passed as an argument to the previous key
     prevKeyRef.current = key;
     // we set the key in localstorage
     window.localStorage.setItem(key, serialize(value));
