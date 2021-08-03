@@ -26,12 +26,13 @@ const useLocalStorageState = (
   React.useEffect(() => {
     // preKeyRef.current keeps track of our previous key
     const prevKey = prevKeyRef.current;
-    // and if the previous key is not as the key passed as an argument
-    // then we got a new get, and we want to change it in localstorage
+    // and if the previous key is not the same as the key passed as an argument
+    // then we got a new key, and we want to change it in localstorage
     if (prevKey !== key) {
+      // We change it by removing the previous key
       window.localStorage.removeItem(prevKey);
     }
-    // we change the previous key to the key passed as an argument
+    // then we assign the key passed as an argument to the previous key 
     prevKeyRef.current = key;
     // we set the key in localstorage
     window.localStorage.setItem(key, serialize(value));
