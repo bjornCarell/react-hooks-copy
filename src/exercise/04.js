@@ -66,8 +66,8 @@ const Game = () => {
   const status = calculateStatus(winner, currentSquares, nextValue);
 
   function selectSquare(square) {
-    // When browsing through history we also want to make a quick return
-    // when a box is clicked: history.length - currentStep > 1
+    // If a box is clicked, when browsing through history we also want to 
+    // make a quick return: history.length - currentStep > 1
     if (winner || currentSquares[square] || history.length - currentStep > 1) {
       return;
     }
