@@ -26,6 +26,14 @@ const Board = ({onClick, squares}) => (
   </div>
 );
 
+const Move = ({step, isCurrent, toggleHistory, text}) => (
+  <li>
+    <button disabled={isCurrent} onClick={() => toggleHistory(step)}>
+      {text} {isCurrent ? ' (current)' : undefined}
+    </button>
+  </li>
+);
+
 const Moves = ({history, currentStep, toggleHistory}) => (
   <ol>
     {history.map((gameState, step) => {
@@ -35,11 +43,13 @@ const Moves = ({history, currentStep, toggleHistory}) => (
       const isCurrent = step === currentStep;
 
       return (
-        <li key={step}>
-          <button disabled={isCurrent} onClick={() => toggleHistory(step)}>
-            {text} {isCurrent ? ' (current)' : undefined}
-          </button>
-        </li>
+        <Move
+          key={step}
+          step={step}
+          isCurrent={isCurrent}
+          toggleHistory={toggleHistory}
+          text={text}
+        />
       );
     })}
   </ol>
