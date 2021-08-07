@@ -4,35 +4,27 @@
 import * as React from 'react';
 import {useLocalStorageState} from '../utils';
 
-const Board = ({onClick, squares}) => {
-  function renderSquare(i) {
-    return (
-      <button className="square" onClick={() => onClick(i)}>
-        {squares[i]}
-      </button>
-    );
-  }
+const BoardSquare = ({onClick, squares, num}) => (
+  <button className="square" onClick={() => onClick(num)}>
+    {squares[num]}
+  </button>
+);
 
-  return (
-    <div>
-      <div className="board-row">
-        {renderSquare(0)}
-        {renderSquare(1)}
-        {renderSquare(2)}
-      </div>
-      <div className="board-row">
-        {renderSquare(3)}
-        {renderSquare(4)}
-        {renderSquare(5)}
-      </div>
-      <div className="board-row">
-        {renderSquare(6)}
-        {renderSquare(7)}
-        {renderSquare(8)}
-      </div>
-    </div>
-  );
-};
+const BoardRow = ({onClick, squares, nums}) => (
+  <div className="board-row">
+    {nums.map(num => (
+      <BoardSquare key={num} onClick={onClick} squares={squares} num={num} />
+    ))}
+  </div>
+);
+
+const Board = ({onClick, squares}) => (
+  <div>
+    <BoardRow onClick={onClick} squares={squares} nums={[0, 1, 2]} />
+    <BoardRow onClick={onClick} squares={squares} nums={[3, 4, 5]} />
+    <BoardRow onClick={onClick} squares={squares} nums={[6, 7, 8]} />
+  </div>
+);
 
 const Moves = ({history, currentStep, toggleHistory}) => (
   <ol>
@@ -66,7 +58,7 @@ const Game = () => {
   const status = calculateStatus(winner, currentSquares, nextValue);
 
   function selectSquare(square) {
-    // If a box is clicked, when browsing through history we also want to 
+    // If a box is clicked, when browsing through history we also want to
     // make a quick return: history.length - currentStep > 1
     if (winner || currentSquares[square] || history.length - currentStep > 1) {
       return;
