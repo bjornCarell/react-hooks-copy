@@ -29,6 +29,7 @@ function PokemonInfo({pokemonName}) {
     error: undefined,
     status: IDLE,
   });
+  const { pokemon, error, status } = state;
 
   React.useEffect(() => {
     if (!pokemonName) {
@@ -51,13 +52,13 @@ function PokemonInfo({pokemonName}) {
     );
   }, [pokemonName]);
 
-  switch (state.status) {
+  switch (status) {
     case PENDING:
       return <PokemonInfoFallback name={pokemonName} />;
     case RESOLVED:
-      return <PokemonDataView pokemon={state.pokemon} />;
+      return <PokemonDataView pokemon={pokemon} />;
     case REJECTED:
-      throw new Error(state.error.message);
+      throw new Error(error.message);
     default:
       return 'Submit a pokemon';
   }
