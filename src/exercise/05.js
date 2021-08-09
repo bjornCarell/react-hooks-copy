@@ -24,12 +24,12 @@ function Tilt({children}) {
       max: 25,
       speed: 500,
       glare: true,
-      'max-glare': 0.5
+      'max-glare': 0.5,
     });
 
     return () => tiltNode.vanillaTilt.destroy();
   }, []);
-  
+
   // 💰 Don't forget to return a cleanup function. VanillaTilt.init will add an
   // object to your DOM node to cleanup:
   // `return () => tiltNode.vanillaTilt.destroy()`
